@@ -52,10 +52,16 @@ public class Menu {
                 "       ➜ Age\n" +
                 "       ➜ Email  ");
 
+        people.add(new Person("Alice", 30, "alice@email.com", 190));
+        people.add(new Person("Bob", 30, "bob@email.com", 190));
+        people.add(new Person("Charlie", 40, "charlie@email.com", 190));
+
         String compare = myObj.nextLine();
 
         for(Person p :  people) {
-            if (p.getName().contains(compare) || p.getEmail().contains(compare)) {
+            int age = Integer.parseInt(compare);
+
+            if (p.getName().contains(compare) || p.getEmail().contains(compare) || p.getAge() == age) {
                 System.out.println(p.toString());
             }
         }
