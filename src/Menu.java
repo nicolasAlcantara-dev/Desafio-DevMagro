@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
+    ArrayList<Person> people = new ArrayList<Person>();
+    Path fileForm = Path.of("utils\\form.txt");
+    List<String> questions = new ArrayList<>();
+    Scanner myObj = new Scanner(System.in).useLocale(Locale.US);
     int option = 0;
     int index = 1;
     public void app() {
@@ -34,9 +35,9 @@ public class Menu {
                 case 4:
                     removeQuestion();
                     break;
-//                case 5:
-//                searchByUser();
-//                    break;
+                case 5:
+                searchByUser();
+                    break;
                 case 6:
                     System.exit(0);
 
@@ -45,18 +46,37 @@ public class Menu {
         while (option > 5 || option <= 0);
     }
 
+    public void searchByUser() {
+        System.out.println("Search User by:\n" +
+                "       ➜ Name\n" +
+                "       ➜ Age\n" +
+                "       ➜ Email  ");
+
+        String compare = myObj.nextLine();
+
+        for(Person p :  people) {
+            if (p.getName().contains(compare) || p.getEmail().contains(compare)) {
+                System.out.println(p.toString());
+            }
+        }
+
+
+
+        app();
+    }
+
     public void removeQuestion() {
         showForm();
-        Scanner myObj = new Scanner(System.in).useLocale(Locale.US);
         System.out.print("Question for deletion: ");
         int numberQ = myObj.nextInt();
         while (numberQ <= 4) {
             numberQ = myObj.nextInt();
         }
+
         try {
-            ArrayList<String> content = (ArrayList<String>) Files.readAllLines(Paths.get("utils\\form.txt"));
-            System.out.println(content.remove(numberQ - 1));
-            Files.write(Paths.get("utils\\form.txt"), content);
+            questions = Files.readAllLines(Paths.get("utils\\form.txt"));
+            System.out.println(questions.remove(numberQ - 1));
+            Files.write(Paths.get("utils\\form.txt"), questions);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -67,12 +87,12 @@ public class Menu {
         int i = 0;
 
         try {
-            List<String> content = Files.readAllLines(Paths.get("utils\\form.txt"));
+            questions = Files.readAllLines(Paths.get("utils\\form.txt"));
             System.out.println("==================================================\n" +
                     "                 FORMULARY\n" +
                     "        Please answer the questions\n" +
                     "==================================================");
-            for(String contents : content) {
+            for(String contents : questions) {
                 i++;
                 System.out.println("[" + i + "] ➤ " + contents);
             }
@@ -83,9 +103,7 @@ public class Menu {
     }
 
     public void createQuestion() {
-        Scanner myObj = new Scanner(System.in).useLocale(Locale.US);
         int numberQuestion = 5;
-        Path fileForm = Path.of("utils\\form.txt");
         String content;
 
         try {
@@ -95,6 +113,7 @@ public class Menu {
             throw new RuntimeException(e.getMessage());
         }
 
+        System.out.print("[" + numberQuestion + "] ➤ ");
         String question = myObj.nextLine();
         while (question.length() < 10 || question.length() > 100) {
             question = myObj.nextLine();
@@ -130,9 +149,6 @@ public class Menu {
     }
 
     public void addPerson() {
-        Scanner myObj = new Scanner(System.in).useLocale(Locale.US);
-        ArrayList<Person> people = new ArrayList<Person>();
-
         String name = myObj.nextLine();
         while (name.length() < 4 || name.length() > 15) {
             System.out.print("Enter with a correct name: ");
@@ -164,9 +180,8 @@ public class Menu {
     }
 
     public void createFile(Person person) {
-
         try {
-            FileWriter myFile = new FileWriter("forms\\"+ index + "-" + person.getName().toUpperCase());
+            FileWriter myFile = new FileWriter("utils//forms//"+ index + "-" + person.getName().toUpperCase());
             myFile.write(person.toString());
             myFile.close();
             System.out.println("Successfully wrote to the file.");
@@ -178,7 +193,7 @@ public class Menu {
     }
 
     public void listPeople() {
-        File folder = new File("forms/");
+        File folder = new File("C:\\Users\\Nicolas Alcantara\\Desktop\\forms\\");
 
         System.out.println("People found: ");
         for (File fileEntry : folder.listFiles()) {
