@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Menu {
     ArrayList<Person> people = new ArrayList<Person>();
@@ -52,21 +53,24 @@ public class Menu {
                 "       ➜ Age\n" +
                 "       ➜ Email  ");
 
-        people.add(new Person("Alice", 30, "alice@email.com", 190));
-        people.add(new Person("Bob", 30, "bob@email.com", 190));
-        people.add(new Person("Charlie", 40, "charlie@email.com", 190));
+        people.add(new Person("Nicolas", 19, "nicolas@email.com", 190));
+        people.add(new Person("Nicholas", 19, "nicholas@email.com", 185));
+        people.add(new Person("Miguel", 16, "miguel@email.com", 180));
 
         String compare = myObj.nextLine();
 
-        for(Person p :  people) {
+        if (compare.matches("\\d+")) {
             int age = Integer.parseInt(compare);
-
-            if (p.getName().contains(compare) || p.getEmail().contains(compare) || p.getAge() == age) {
-                System.out.println(p.toString());
-            }
+            people.stream()
+                    .filter(person -> person.getAge() == age)
+                    .forEach(System.out::println);
         }
 
+        Stream<Person> streamEmail = people.stream().filter(people -> people.getEmail().contains(compare));
+        streamEmail.forEach(System.out::println);
 
+        Stream<Person> streamName = people.stream().filter(people -> people.getName().contains(compare));
+        streamName.forEach(System.out::println);
 
         app();
     }
