@@ -37,9 +37,15 @@ public class Menu {
                     removeQuestion();
                     break;
                 case 5:
-                searchByUser();
+                    searchByUser();
                     break;
                 case 6:
+                    removeUser();
+                    break;
+                case 7:
+                    updateUser();
+                    break;
+                case 8:
                     System.exit(0);
 
             }
@@ -47,15 +53,81 @@ public class Menu {
         while (option > 5 || option <= 0);
     }
 
+    public void updateUser() {
+        if(people.isEmpty()) {
+            System.out.println("You need add user!!");
+        }
+
+        listPeople();
+        System.out.print("User to be updated: ");
+        int userNumber = myObj.nextInt();
+
+        String name = getValidString("Enter name: ", 4, 15);
+        int age = getValidInt("Enter age: ", 0, 100);
+        String email = getValidString("Enter email: ", 10, 50);
+        float height = getValidInt("Enter height (cm): ", 140, 300);
+
+        Person personObj = new Person(name, age, email, height);
+        people.remove(userNumber - 1);
+        people.add(userNumber - 1, personObj);
+
+        app();
+
+    }
+
+    public void addPerson() {
+        String name = getValidString("Enter name: ", 4, 15);
+        int age = getValidInt("Enter age: ", 0, 100);
+        String email = getValidString("Enter email: ", 10, 50);
+        float height = getValidInt("Enter height (cm): ", 140, 300);
+
+        Person personObj = new Person(name, age, email, height);
+        people.add(personObj);
+
+        app();
+    }
+
+    private String getValidString(String prompt, int min, int max) {
+        String input;
+        do {
+            System.out.print(prompt);
+            input = myObj.nextLine();
+        } while (input.length() < min || input.length() > max);
+        return input;
+    }
+
+    private int getValidInt(String prompt, int min, int max) {
+        int input;
+        do {
+            System.out.print(prompt);
+            while (!myObj.hasNextInt()) {
+                System.out.print("Enter a valid number: ");
+                myObj.next();
+            }
+            input = myObj.nextInt();
+            myObj.nextLine(); // Consumir quebra de linha
+        } while (input < min || input > max);
+        return input;
+    }
+
+
+    public void removeUser() {
+        if(people.isEmpty()) {
+            System.out.println("You need add user!!");
+        } else {
+            listPeople();
+            System.out.print("User to be deleted: ");
+            int userNumber = myObj.nextInt();
+            people.remove(userNumber - 1);
+        }
+
+    }
+
     public void searchByUser() {
         System.out.println("Search User by:\n" +
                 "       ➜ Name\n" +
                 "       ➜ Age\n" +
                 "       ➜ Email  ");
-
-        people.add(new Person("Nicolas", 19, "nicolas@email.com", 190));
-        people.add(new Person("Nicholas", 19, "nicholas@email.com", 185));
-        people.add(new Person("Miguel", 16, "miguel@email.com", 180));
 
         String compare = myObj.nextLine();
 
@@ -158,56 +230,15 @@ public class Menu {
         }
     }
 
-    public void addPerson() {
-        String name = myObj.nextLine();
-        while (name.length() < 4 || name.length() > 15) {
-            System.out.print("Enter with a correct name: ");
-            name = myObj.nextLine();
-        }
-
-        int age = Integer.parseInt(myObj.nextLine());
-        while (age < 0 || age > 100) {
-            System.out.println("A true age");
-            age = Integer.parseInt(myObj.nextLine());
-        }
-
-        String email = myObj.nextLine();
-        while (email.length() <= 10) {
-            System.out.print("Enter with a correct email: ");
-            email = myObj.nextLine();
-        }
-
-        float height = Float.parseFloat(myObj.nextLine());
-        while (height < 140 || height > 300) {
-            System.out.print("Enter with a correct height: ");
-            height = Float.parseFloat(myObj.nextLine());
-        }
-
-        Person personObj = new Person(name, age, email, height);
-        people.add(personObj);
-        createFile(personObj);
-        option = 0;
-    }
-
-    public void createFile(Person person) {
-        try {
-            FileWriter myFile = new FileWriter("utils//forms//"+ index + "-" + person.getName().toUpperCase());
-            myFile.write(person.toString());
-            myFile.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        index++;
-    }
-
     public void listPeople() {
-        File folder = new File("C:\\Users\\Nicolas Alcantara\\Desktop\\forms\\");
-
-        System.out.println("People found: ");
-        for (File fileEntry : folder.listFiles()) {
-            System.out.println(fileEntry.getName());
+        int i = 1;
+        if(people.isEmpty()) {
+            System.out.println("You ned add Users!!");
+        } else {
+            for(Person user : people) {
+                System.out.println(i + "-" + user);
+                i++;
+            }
         }
         option = 0;
     }
