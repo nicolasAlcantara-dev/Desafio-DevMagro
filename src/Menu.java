@@ -29,6 +29,7 @@ public class Menu {
                     break;
                 case 2:
                     listPeople();
+                    app();
                     break;
                 case 3:
                     createQuestion();
@@ -234,13 +235,9 @@ public class Menu {
         int i = 1;
         if(people.isEmpty()) {
             System.out.println("You ned add Users!!");
-        } else {
-            for(Person user : people) {
-                System.out.println(i + "-" + user);
-                i++;
-            }
         }
-        option = 0;
+
+        people.forEach( (System.out::println));
     }
 
 
