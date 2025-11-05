@@ -4,14 +4,13 @@
 ==================================================
  [1] ➤ Register User
  [2] ➤ List All Registered Users
- [3] ➤ Add New Question to the Form
- [4] ➤ Delete Question from the Form
- [5] ➤ Search User by:
+ [3] ➤ Search User by:
        ➜ Name
        ➜ Age
        ➜ Email                                  
- [6] ➤ Delete User
- [7] ➤ Update User
+ [4] ➤ Delete User
+ [5] ➤ Update User
+ [6] ➤ Exit
 ==================================================
  ❯ Choose an option (1-6):
 ==================================================

@@ -9,11 +9,9 @@ import java.util.stream.Stream;
 
 public class Menu {
     ArrayList<Person> people = new ArrayList<Person>();
-    Path fileForm = Path.of("utils\\form.txt");
     List<String> questions = new ArrayList<>();
     Scanner myObj = new Scanner(System.in).useLocale(Locale.US);
     int option = 0;
-    int index = 1;
     public void app() {
 
         do {
@@ -32,27 +30,22 @@ public class Menu {
                     app();
                     break;
                 case 3:
-                    createQuestion();
-                    break;
-                case 4:
-                    removeQuestion();
-                    break;
-                case 5:
                     searchByUser();
                     break;
-                case 6:
+                case 4:
                     removeUser();
                     break;
-                case 7:
+                case 5:
                     updateUser();
                     break;
-                case 8:
+                case 6:
                     System.exit(0);
 
             }
         }
         while (option > 5 || option <= 0);
     }
+
 
     public void updateUser() {
         if(people.isEmpty()) {
@@ -148,24 +141,6 @@ public class Menu {
         app();
     }
 
-    public void removeQuestion() {
-        showForm();
-        System.out.print("Question for deletion: ");
-        int numberQ = myObj.nextInt();
-        while (numberQ <= 4) {
-            numberQ = myObj.nextInt();
-        }
-
-        try {
-            questions = Files.readAllLines(Paths.get("utils\\form.txt"));
-            System.out.println(questions.remove(numberQ - 1));
-            Files.write(Paths.get("utils\\form.txt"), questions);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        app();
-    }
-
         public void showForm() {
         int i = 0;
 
@@ -185,42 +160,6 @@ public class Menu {
         }
     }
 
-    public void createQuestion() {
-        int numberQuestion = 5;
-        String content;
-
-        try {
-            content = Files.readString(fileForm);
-            showForm();
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        System.out.print("[" + numberQuestion + "] ➤ ");
-        String question = myObj.nextLine();
-        while (question.length() < 10 || question.length() > 100) {
-            question = myObj.nextLine();
-        }
-
-
-        numberQuestion += 1;
-
-
-        try {
-            FileWriter myFile = new FileWriter("utils\\form.txt");
-            myFile.write(content);
-            myFile.write(question);
-            myFile.write("\n");
-            myFile.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred: " + e.getCause());
-        }
-
-        app();
-
-    }
-
     public void showMenu() {
         Path fileMenu = Path.of("utils\\menu.txt");
         try {
@@ -232,12 +171,15 @@ public class Menu {
     }
 
     public void listPeople() {
-        int i = 1;
+        int index = 1;
         if(people.isEmpty()) {
             System.out.println("You ned add Users!!");
         }
 
-        people.forEach( (System.out::println));
+        for (Person person : people) {
+            System.out.println(index + person.getName() + " " + person.getEmail() + " " + person.getAge()  + " " +   person.getHeight());
+            index++;
+        }
     }
 
 

@@ -1,4 +1,0 @@
-What is your full name?
-How old are you? (In years)
-What is your email address?
-What is your height? (In centimeters, ex: 175)
